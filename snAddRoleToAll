@@ -1,0 +1,16 @@
+// Look up all active users
+var gr = new GlideRecord("sys_user");
+gr.addQuery('active', true);
+gr.query();
+
+// Iterate through users
+while(gr.next()) {
+       // Look up user roles
+       var grd = new GlideRecord('sys_user_has_role');
+           // Check if they have the approver_user role and if not add it
+           if (gr.accumulated_roles.toString().indexOf(",approver_user,") == -1) {
+               grd.user = gr.sys_id;
+               grd.role = 'debab85bff02110053ccffffffffffb6'; // sys_id of approver_user role
+               grd.insert();
+               }
+}
