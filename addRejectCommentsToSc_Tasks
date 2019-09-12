@@ -1,0 +1,23 @@
+var comments = '';
+
+// Find associated approval record(s)
+var getApprovals = new GlideRecord('sysapproval_approver');
+getApprovals.addQuery('sysapproval',current.sys_id);
+getApprovals.addQuery('comments','!=','');
+getApprovals.query();
+
+// Interate through Approval Records and get comments
+while (getApprovals.next())  {
+	comments += getApprovals.comments.getJournalEntry(-1);
+}
+
+// Find associated task records
+var getTasks = new GlideRecord('sc_task');
+getTasks.addQuery('current.sys_id', '=','parent');
+getTasks.query();
+
+// Iternate through Tasks and post comments to the description
+while (getTasks.next()) {
+	getTasks.description += comments;
+	getTasks.update();
+}
