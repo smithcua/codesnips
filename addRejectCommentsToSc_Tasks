@@ -1,8 +1,9 @@
+workflow.info('current.sys_id = ' + current.sys_id);
 var comments = '';
 
 // Find associated approval record(s)
 var getApprovals = new GlideRecord('sysapproval_approver');
-getApprovals.addQuery('sysapproval',current.sys_id);
+getApprovals.addQuery('sysapproval',current.getValue('sys_id'));
 getApprovals.addQuery('comments','!=','');
 getApprovals.query();
 
@@ -13,11 +14,11 @@ while (getApprovals.next())  {
 
 // Find associated task records
 var getTasks = new GlideRecord('sc_task');
-getTasks.addQuery('current.sys_id', '=','parent');
+getTasks.addQuery('parent',current.getValue('sys_id'));
 getTasks.query();
 
 // Iternate through Tasks and post comments to the description
 while (getTasks.next()) {
-	getTasks.description += comments;
+	getTasks.description.setValue(comments);
 	getTasks.update();
 }
