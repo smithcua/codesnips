@@ -1,0 +1,30 @@
+var gr = new GlideRecord('sys_notif_subscription');
+gr.addEncodedQuery('notification=e8769c631b37c4d05d1a624abc4bcb9c^active=true^userISNOTEMPTY');
+gr.query();
+
+while(gr.next()){
+var cond = gr.getValue('condition');
+var reqFor = gr.getValue('user');
+var device = gr.getValue('devices');
+
+var grCreate = new GlideRecord('sys_notif_subscription');
+grCreate.initialize();
+grCreate.setValue('user', reqFor);
+grCreate.setValue('condition', cond);
+grCreate.setValue('notification', "7ed0d91bdb8c9810c969d0b2ca961968");
+grCreate.setValue('sys_class_name', "sys_notif_subscription");
+grCreate.setValue('sys_name', "Visitor Sign Out");
+grCreate.setValue('name', "Visitor Sign Out");
+grCreate.setValue('devices', device);
+grCreate.insert();
+
+grCreate.initialize();
+grCreate.setValue('user', reqFor);
+grCreate.setValue('condition', cond);
+grCreate.setValue('notification', "bad58ad3dbc01c10c969d0b2ca96196e");
+grCreate.setValue('sys_class_name', "sys_notif_subscription");
+grCreate.setValue('sys_name', "Visitor Waiting");
+grCreate.setValue('name', "Visitor Waiting");
+grCreate.setValue('devices', device);
+grCreate.insert();
+}
